@@ -8,6 +8,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.content.Intent;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -15,11 +16,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class Register_Activity extends AppCompatActivity implements View.OnClickListener{
 
     ProgressBar progressBar;
     EditText txtInputName, txtInputEmail, txtInputPassword;
+    ImageView btnBack;
     private FirebaseAuth mAuth;
 
     @Override
@@ -30,12 +33,14 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         txtInputEmail = findViewById(R.id.txtInputEmail);
         txtInputName = findViewById(R.id.txtInputName);
         txtInputPassword = findViewById(R.id.txtInputPassword);
+        btnBack = findViewById(R.id.btnBack);
         progressBar = findViewById(R.id.progressBar2);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         findViewById(R.id.btnCreateAccount).setOnClickListener(this);
+        btnBack.setOnClickListener(this);
     }
 
     private void registerUser(){
@@ -80,7 +85,14 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                 if(task.isSuccessful()){
                     Toast.makeText(getApplicationContext(), "User criado com sucesso!", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getApplicationContext(),"Um erro com a BD ocorreu. Sorry!", Toast.LENGTH_SHORT).show();
+
+
+                    if(task.getException() instanceof FirebaseAuthUserCollisionException){
+                        Toast.makeText(getApplicationContext(),"Já existe uma conta com estes dados.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
