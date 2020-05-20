@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1027770040289",
+    "firebase_url": "https://findmypeople-ac9e6.firebaseio.com",
+    "project_id": "findmypeople-ac9e6",
+    "storage_bucket": "findmypeople-ac9e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027770040289:android:7abfa334721d27ef1bdca0",
+        "android_client_info": {
+          "package_name": "com.example.findmypeople"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027770040289-eomj7227s79rtmfnp9tr79slg33fgmmm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.findmypeople",
+            "certificate_hash": "dfdd93fb26d65c8a9a93597d1ad7e1f0f14b0a69"
+          }
+        },
+        {
+          "client_id": "1027770040289-a0annlnkd7s5c18f7115npiover1mlf3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATJecMVkiY01v1GPSCKWnoygHAGq7HutE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027770040289-a0annlnkd7s5c18f7115npiover1mlf3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
