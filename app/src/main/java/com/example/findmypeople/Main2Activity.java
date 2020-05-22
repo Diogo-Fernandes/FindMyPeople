@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,14 +19,15 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        bottomNavigationView.findViewById(R.id.bottomNav);
+        bottomNavigationView = findViewById(R.id.bottomNav);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new ContactsFragment());
+        Log.i("main2","OnCreate");
 
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod=new
+    public BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod = new
             BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -34,6 +36,7 @@ public class Main2Activity extends AppCompatActivity {
                     switch (menuItem.getItemId()){
                         case R.id.contacts:
                             fragment = new ContactsFragment();
+
                             break;
 
                         case R.id.timeline:
@@ -42,6 +45,14 @@ public class Main2Activity extends AppCompatActivity {
 
                         case R.id.map:
                             fragment = new MapFragment();
+                            break;
+
+                        case R.id.notifications:
+                            fragment = new NotificationsFragment();
+                            break;
+
+                        case R.id.profile:
+                            fragment = new UserProfileFragment();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();

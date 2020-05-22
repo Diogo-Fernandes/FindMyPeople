@@ -17,6 +17,10 @@
         android:id="@+id/bottomNav"
         android:layout_alignParentBottom="true"
         android:background="@color/colorBackground"
-        app:menu="@menu/menu"/>
+        app:menu="@menu/menu"
+        app:itemIconTint="@drawable/bottom_nav_color_selector"
+        app:itemTextColor="@drawable/bottom_nav_color_selector"
+        app:labelVisibilityMode="unlabeled" />
+
 
 </RelativeLayout>
