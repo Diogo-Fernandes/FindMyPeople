@@ -6,4 +6,5 @@
     <color name="colorInactiveIcon">#9498A6</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorBackground">#29304D</color>
+    <color name="colorRoundBackground">#F7F9FC</color>
 </resources>

@@ -1,14 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".TimelineFragment"
+    android:background="@color/colorPrimary">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/perfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Perfil"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="#fff"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="27dp"/>
+
+    <View
+        android:id="@+id/bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginTop="130dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/layout_bg_round" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/profilePic"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        tools:src="@tools:sample/avatars"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/perfil"
+        android:layout_marginTop="27dp"
+        />
+
+    <TextView
+        android:id="@+id/masterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePic"
+        android:layout_margin="10dp"
+        android:text="Utilizador Master"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15dp"
+        />
+
+    <Button
+        android:id="@+id/changeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/txtrounded"
+        android:drawableLeft="@drawable/ic_person_pin"
+        android:drawableRight="@drawable/ic_arrow_next"
+        android:drawablePadding="20dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center|start"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Mudar nome de utilizador"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/masterName" />
+
+    <Button
+        android:id="@+id/changePic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/txtrounded"
+        android:drawableLeft="@drawable/ic_add_photo"
+        android:drawableRight="@drawable/ic_arrow_next"
+        android:drawablePadding="20dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center|start"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Mudar foto de perfil"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changeName" />
+
+    <Button
+        android:id="@+id/ranking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/txtrounded"
+        android:drawableLeft="@drawable/ic_ribbon"
+        android:drawableRight="@drawable/ic_arrow_next"
+        android:drawablePadding="20dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center|start"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Ranking dos meus VIPs"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changePic" />
+
+    <TextView
+        android:id="@+id/security"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ranking"
+        android:layout_margin="30dp"
+        android:text="Definições de Segurança"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20dp"
+        />
+
+    <Button
+        android:id="@+id/auth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/txtrounded"
+        android:drawableLeft="@drawable/ic_lock"
+        android:drawableRight="@drawable/ic_arrow_next"
+        android:drawablePadding="20dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center|start"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Modo de autenticação"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/security" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/txtrounded"
+        android:drawableLeft="@drawable/ic_logout"
+        android:drawableRight="@drawable/ic_arrow_next"
+        android:drawablePadding="20dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center|start"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Terminar sessão"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/auth" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
