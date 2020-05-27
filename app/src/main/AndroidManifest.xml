@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
  <!--nav -->
-        <!-- <activity android:name=".Main2Activity"></activity> -->
+        <activity android:name=".Main2Activity"></activity>
 
         <activity android:name=".Contacts_Activity"></activity>
 

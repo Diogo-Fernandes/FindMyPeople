@@ -93,7 +93,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBar.setVisibility(View.GONE);
                 if(task.isSuccessful()){
-                    Intent intent = new Intent(Login.this, Main2Activity.class);
+                    //Vai carregar a Contacts Activity porque o Main2Activity está a crashar
+                    Intent intent = new Intent(Login.this, Contacts_Activity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }else{
