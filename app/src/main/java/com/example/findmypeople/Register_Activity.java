@@ -104,6 +104,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                     FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
                     String uid = firebaseuser.getUid();
 
+
                     Toast.makeText(getApplicationContext(), "User created!", Toast.LENGTH_SHORT).show();
 
                   /* Map<String, Object> map = new HashMap<>();
@@ -163,6 +164,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                 }
             }
         });
+
     }
 
     @Override
