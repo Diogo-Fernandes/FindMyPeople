@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ChildProfileFragment"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:id="@+id/btnBack2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="359dp"
+        android:layout_marginBottom="105dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_icon_feather_arrow_left"
+        />
+
+    <TextView
+        android:id="@+id/contactsProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contactos"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="#fff"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="27dp"/>
+
+    <View
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="130dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/layout_bg_round" />
+
+    <ImageView
+        android:id="@+id/profilePic"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        tools:src="@tools:sample/avatars"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contactsProfile"
+        android:layout_marginTop="27dp"
+        />
+
+    <TextView
+        android:id="@+id/newUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePic"
+        android:layout_margin="10dp"
+        android:text="Novo utilizador"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15dp"
+        />
+
+    <View
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="250dp"
+        android:layout_marginBottom="250dp"
+        android:layout_marginLeft="23dp"
+        android:layout_marginRight="23dp"
+        app:layout_constraintTop_toBottomOf="@+id/newUserName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/txtrounded" />
+
+
+
+    <EditText
+        android:id="@+id/txtName"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        app:layout_constraintTop_toTopOf="@id/card"
+        app:layout_constraintEnd_toEndOf="@id/card"
+        app:layout_constraintStart_toStartOf="@id/card"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="23dp"
+        android:background="@drawable/txtrounded"
+        android:drawableLeft="@drawable/ic_person_pin"
+        android:drawablePadding="10dp"
+        android:fontFamily="@font/open_sans"
+        android:hint="Utilizador Novo"
+        android:inputType="text"
+        android:paddingLeft="10dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15sp"
+        />
+
+    <EditText
+        android:id="@+id/txtPhone"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        app:layout_constraintTop_toBottomOf="@+id/txtName"
+        app:layout_constraintEnd_toEndOf="@id/card"
+        app:layout_constraintStart_toStartOf="@id/card"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="23dp"
+        android:background="@drawable/txtrounded"
+        android:drawableLeft="@drawable/ic_person_pin"
+        android:drawablePadding="10dp"
+        android:fontFamily="@font/open_sans"
+        android:hint="Nº de Telemóvel"
+        android:inputType="text"
+        android:paddingLeft="10dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15sp"
+/>
+
+    <EditText
+        android:id="@+id/txtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        app:layout_constraintTop_toBottomOf="@+id/txtPhone"
+        app:layout_constraintEnd_toEndOf="@id/card"
+        app:layout_constraintStart_toStartOf="@id/card"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="23dp"
+        android:background="@drawable/txtrounded"
+        android:drawableLeft="@drawable/ic_person_pin"
+        android:drawablePadding="10dp"
+        android:fontFamily="@font/open_sans"
+        android:hint="email@mail.com"
+        android:inputType="text"
+        android:paddingLeft="10dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15sp"/>
+
+    <Button
+        android:id="@+id/btnAccess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="23dp"
+        android:layout_marginRight="23dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/ctarounded"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center"
+        android:text="Pedir acesso"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="@+id/card"
+        app:layout_constraintStart_toStartOf="@+id/card"
+        app:layout_constraintTop_toBottomOf="@+id/card" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
