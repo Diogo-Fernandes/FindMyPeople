@@ -40,7 +40,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-    private static final String TAG = "Register_Activity";
+    private static final String TAG = "users";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +61,8 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         btnBack.setOnClickListener(this);
     }
 
-    private void registerUser(){
-         String name = txtInputName.getText().toString().trim();
+    public void registerUser(){
+         final String name = txtInputName.getText().toString().trim();
          String email = txtInputEmail.getText().toString().trim();
          String password = txtInputPassword.getText().toString().trim();
 
@@ -104,7 +104,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                     FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
                     String uid = firebaseuser.getUid();
 
-
+                    addUserInfo(name);
                     Toast.makeText(getApplicationContext(), "User created!", Toast.LENGTH_SHORT).show();
 
                   /* Map<String, Object> map = new HashMap<>();
@@ -172,7 +172,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         switch(v.getId()){
             case R.id.btnCreateAccount:
                 registerUser();
-                addUserInfo();
+
                 break;
             case R.id.btnBack:
                 startActivity(new Intent(this, Login.class));
@@ -180,26 +180,34 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void addUserInfo() {
-        String name = txtInputName.getText().toString().trim();
+    public void addUserInfo(final String name) {
+        Log.d(TAG, "entrou userinfo");
+
+        //String name = txtInputName.getText().toString().trim();
         FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = firebaseuser.getUid();
 
-        CollectionReference dbUsers = db.collection("Users_master");
 
-        User user = new User(name, uid);
+        Toast.makeText(Register_Activity.this, "ToastText", Toast.LENGTH_SHORT).show();
+        //CollectionReference dbUsers = db.collection("Users_master");
 
-        dbUsers.add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(Register_Activity.this, "Deu", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Register_Activity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        final User user = new User(name, uid);
+        Log.d(TAG, name);
+        Log.d(TAG, uid);
+
+        db.collection("Users_master").add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "onSuccess: Saved user fo firestore");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: failure", e);
+                    }
+                });
 
 
     }

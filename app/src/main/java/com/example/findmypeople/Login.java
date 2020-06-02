@@ -94,7 +94,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 progressBar.setVisibility(View.GONE);
                 if(task.isSuccessful()){
                     //Vai carregar a Contacts Activity(pagina branca) porque ainda nao carreguei os fragments da matilde
-                    Intent intent = new Intent(Login.this, Main2Activity.class);
+                    Intent intent = new Intent(Login.this, Contacts_Activity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }else{
