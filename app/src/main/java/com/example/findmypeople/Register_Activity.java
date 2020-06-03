@@ -169,10 +169,9 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         userProfile.put("name", name);
         userProfile.put("uid", uid);
         userProfile.put("phone_number", phone);
-        if (radioBg.isSelected()){
-            userProfile.put("type", "bodyguard");
-
-            db.collection("Users_master").document(uid)
+        if (radioVip.isSelected()){
+            userProfile.put("type", "VIP");
+            db.collection("Users_child").document(uid)
                     .set(userProfile)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -186,9 +185,10 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                             Log.w(TAG, "Error writing document", e);
                         }
                     });
-        }else if (radioVip.isSelected()){
-            userProfile.put("type", "VIP");
-            db.collection("Users_child").document(uid)
+        }else{
+            userProfile.put("type", "bodyguard");
+
+            db.collection("Users_master").document(uid)
                     .set(userProfile)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
