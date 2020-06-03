@@ -2,8 +2,10 @@ package com.example.findmypeople;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatRadioButton;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -12,6 +14,7 @@ import android.content.Intent;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,10 +38,13 @@ import java.util.Collection;
 
 public class Register_Activity extends AppCompatActivity implements View.OnClickListener {
     ProgressBar progressBar;
-    EditText txtInputName, txtInputEmail, txtInputPassword;
+    EditText txtInputName, txtInputEmail, txtInputPassword, txtInputPhone;
     ImageView btnBack;
+    AppCompatRadioButton radioBg, radioVip;
+    RadioGroup radioGroup;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+
 
     private static final String TAG = "Register_Activity";
     @Override
@@ -51,8 +57,12 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         txtInputEmail = findViewById(R.id.txtInputEmail);
         txtInputName = findViewById(R.id.txtInputName);
         txtInputPassword = findViewById(R.id.txtInputPassword);
+        txtInputPhone = findViewById(R.id.txtInputPhone);
         btnBack = findViewById(R.id.btnBack);
         progressBar = findViewById(R.id.progressBar2);
+        radioBg = findViewById(R.id.radioBg);
+        radioVip = findViewById(R.id.radioVIP);
+        radioGroup = findViewById(R.id.radioGroup);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -65,6 +75,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         String name = txtInputName.getText().toString().trim();
         String email = txtInputEmail.getText().toString().trim();
         String password = txtInputPassword.getText().toString().trim();
+        String phone = txtInputPhone.getText().toString().trim();
 
         if(email.isEmpty()){
             txtInputEmail.setError("E-mail é obrigatório!");
@@ -81,6 +92,11 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
             txtInputName.requestFocus();
             return;
         }
+        if (phone.length() != 9) {
+            txtInputPhone.setError("Por favor insira um número de telemóvel válido.");
+            txtInputPhone.requestFocus();
+            return;
+        }
         //Verifica se email é válido
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             txtInputEmail.setError("Por favor insira um e-mail válido :)");
@@ -91,6 +107,11 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         if (password.length() < 6) {
             txtInputPassword.setError("Por favor insira uma password com mais de 6 caracteres.");
             txtInputPassword.requestFocus();
+            return;
+        }
+        if (radioVip.isSelected()==false && radioBg.isSelected()==false) {
+            Toast.makeText(getApplicationContext(), "Por favor seleciona um tipo de conta!", Toast.LENGTH_SHORT).show();
+            radioGroup.requestFocus();
             return;
         }
 
@@ -180,6 +201,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
 
     private void addUserInfo() {
         String name = txtInputName.getText().toString().trim();
+        String phone = txtInputPhone.getText().toString().trim();
         FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = firebaseuser.getUid();
 
@@ -190,7 +212,12 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         Map<String, Object> userProfile = new HashMap<>();
         userProfile.put("name", name);
         userProfile.put("uid", uid);
-        userProfile.put("phone_number", "915849999");
+        userProfile.put("phone_number", phone);
+        if (radioBg.isSelected()){
+            userProfile.put("type", "bodyguard");
+        }else if (radioVip.isSelected()){
+            userProfile.put("type", "VIP");
+        }
 
         db.collection("Users_master").document(uid)
                 .set(userProfile)
@@ -206,6 +233,25 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
+    }
+
+    public void onRadioButtonClicked(View view){
+        int colorPrimary = getResources().getColor(R.color.colorPrimary);
+        boolean isSelected = ((AppCompatRadioButton)view).isChecked();
+
+        //Unselected text color vai ser cinzento escuro. Se não ficar bem então muda-se para a colorPrimary.
+        switch (view.getId()){
+            case R.id.radioBg:
+                if (isSelected){
+                    radioBg.setTextColor(colorPrimary);
+                    radioVip.setTextColor(Color.LTGRAY);
+                }
+                break;
+            case R.id.radioVIP:
+                    radioVip.setTextColor(colorPrimary);
+                    radioBg.setTextColor(Color.LTGRAY);
+                break;
+        }
     }
 
 }
