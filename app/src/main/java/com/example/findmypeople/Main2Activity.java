@@ -36,7 +36,6 @@ public class Main2Activity extends AppCompatActivity {
                     switch (menuItem.getItemId()){
                         case R.id.contacts:
                             fragment = new ContactsFragment();
-
                             break;
 
                         case R.id.timeline:

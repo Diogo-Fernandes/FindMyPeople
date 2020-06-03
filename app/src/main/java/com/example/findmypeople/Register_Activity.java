@@ -169,7 +169,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         userProfile.put("name", name);
         userProfile.put("uid", uid);
         userProfile.put("phone_number", phone);
-        if (radioVip.isSelected()){
+        if (radioVip.isChecked()){
             userProfile.put("type", "VIP");
             db.collection("Users_child").document(uid)
                     .set(userProfile)
