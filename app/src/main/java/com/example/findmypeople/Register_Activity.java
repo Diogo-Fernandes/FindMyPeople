@@ -109,11 +109,12 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
             txtInputPassword.requestFocus();
             return;
         }
-        if (radioVip.isSelected()==false && radioBg.isSelected()==false) {
+        //THIS NOT WORKING
+        /*if (!radioVip.isSelected() && !radioBg.isSelected()) {
             Toast.makeText(getApplicationContext(), "Por favor seleciona um tipo de conta!", Toast.LENGTH_SHORT).show();
             radioGroup.requestFocus();
             return;
-        }
+        } */
 
         //BUG - Falta alterar a posiçao da progress bar (ta no topo esquerdo) e mudar a cor!
         progressBar.setVisibility(View.VISIBLE);
@@ -126,51 +127,6 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                     String uid = firebaseuser.getUid();
 
                     Toast.makeText(getApplicationContext(), uid, Toast.LENGTH_SHORT).show();
-
-                  /* Map<String, Object> map = new HashMap<>();
-                   map.put("name", name);
-                   map.put("UID", uid);
-                   map.put("phone_number", "9122222");
-
-                   db.collection("Users_master")
-                           .add(map)
-                           .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                               @Override
-                               public void onSuccess(DocumentReference documentReference) {
-                                Log.d(TAG, "onSuccess: task was successful");
-                               }
-                           })
-                           .addOnFailureListener(new OnFailureListener() {
-                               @Override
-                               public void onFailure(@NonNull Exception e) {
-                                Log.d(TAG, "onSuccess: task aws NOT SUCCESSFULL");
-                               }
-                           });/*
-
-                    //Adicionar nome & tipo de user à collection com o UID respetivo
-                    //falta fazer if radiobuttonchild -> save to users_child
-
-
-
-                   /* Map<String, Object> user = new HashMap<>();
-                    user.put("name", name);
-                    user.put("phone_number", "915849999");
-
-                    db.collection("Users_master").document(uid)
-                            .set(user)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "DocumentSnapshot successfully written!");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error writing document", e);
-                                }
-                            }); */
-
 
                 }else{
 
@@ -215,24 +171,39 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         userProfile.put("phone_number", phone);
         if (radioBg.isSelected()){
             userProfile.put("type", "bodyguard");
+
+            db.collection("Users_master").document(uid)
+                    .set(userProfile)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error writing document", e);
+                        }
+                    });
         }else if (radioVip.isSelected()){
             userProfile.put("type", "VIP");
+            db.collection("Users_child").document(uid)
+                    .set(userProfile)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error writing document", e);
+                        }
+                    });
         }
 
-        db.collection("Users_master").document(uid)
-                .set(userProfile)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
     }
 
     public void onRadioButtonClicked(View view){
