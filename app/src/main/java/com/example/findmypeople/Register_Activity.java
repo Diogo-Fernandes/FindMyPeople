@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,12 +40,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-<<<<<<< Updated upstream
-    private static final String TAG = "users";
-=======
     private static final String TAG = "Register_Activity";
-
->>>>>>> Stashed changes
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,40 +61,28 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         btnBack.setOnClickListener(this);
     }
 
-<<<<<<< Updated upstream
-    public void registerUser(){
-         final String name = txtInputName.getText().toString().trim();
-         String email = txtInputEmail.getText().toString().trim();
-         String password = txtInputPassword.getText().toString().trim();
-
-        if(email.isEmpty()){
-=======
-    private void registerUser() {
+    private void registerUser(){
         String name = txtInputName.getText().toString().trim();
         String email = txtInputEmail.getText().toString().trim();
         String password = txtInputPassword.getText().toString().trim();
->>>>>>> Stashed changes
 
-        if (email.isEmpty()) {
+        if(email.isEmpty()){
             txtInputEmail.setError("E-mail é obrigatório!");
             txtInputEmail.requestFocus();
             return;
         }
         if(password.isEmpty()){
-        if (password.isEmpty()) {
             txtInputPassword.setError("Password é obrigatória!");
             txtInputPassword.requestFocus();
             return;
         }
         if(name.isEmpty()){
-        if (name.isEmpty()) {
             txtInputName.setError("Nome é obrigatório!");
             txtInputName.requestFocus();
             return;
         }
         //Verifica se email é válido
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             txtInputEmail.setError("Por favor insira um e-mail válido :)");
             txtInputEmail.requestFocus();
             return;
@@ -119,16 +101,10 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBar.setVisibility(View.GONE);
                 if(task.isSuccessful()){
-                if (task.isSuccessful()) {
                     FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
                     String uid = firebaseuser.getUid();
 
-<<<<<<< Updated upstream
-                    addUserInfo(name);
-                    Toast.makeText(getApplicationContext(), "User created!", Toast.LENGTH_SHORT).show();
-=======
                     Toast.makeText(getApplicationContext(), uid, Toast.LENGTH_SHORT).show();
->>>>>>> Stashed changes
 
                   /* Map<String, Object> map = new HashMap<>();
                    map.put("name", name);
@@ -176,32 +152,25 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
 
 
                 }else{
-                } else {
 
 
                     if(task.getException() instanceof FirebaseAuthUserCollisionException){
                         Toast.makeText(getApplicationContext(),"Já existe uma conta com estes dados.", Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(getApplicationContext(), task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                    if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                        Toast.makeText(getApplicationContext(), "Já existe uma conta com estes dados.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                 }
             }
         });
-
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-        switch (v.getId()) {
             case R.id.btnCreateAccount:
                 registerUser();
-
+                addUserInfo();
                 break;
             case R.id.btnBack:
                 startActivity(new Intent(this, Login.class));
@@ -209,42 +178,15 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    public void addUserInfo(final String name) {
-        Log.d(TAG, "entrou userinfo");
-
-        //String name = txtInputName.getText().toString().trim();
+    private void addUserInfo() {
+        String name = txtInputName.getText().toString().trim();
         FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = firebaseuser.getUid();
 
-<<<<<<< Updated upstream
-
-        Toast.makeText(Register_Activity.this, "ToastText", Toast.LENGTH_SHORT).show();
-        //CollectionReference dbUsers = db.collection("Users_master");
-
-        final User user = new User(name, uid);
-        Log.d(TAG, name);
-        Log.d(TAG, uid);
-
-        db.collection("Users_master").add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "onSuccess: Saved user fo firestore");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure: failure", e);
-                    }
-                });
-=======
         db.collection("Users_master").document(uid);
 
         /* User user = new User(name, uid);*/
->>>>>>> Stashed changes
 
-    }
         Map<String, Object> userProfile = new HashMap<>();
         userProfile.put("name", name);
         userProfile.put("uid", uid);
@@ -265,4 +207,5 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                     }
                 });
     }
+
 }
