@@ -126,6 +126,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                     FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
                     String uid = firebaseuser.getUid();
 
+                    addUserInfo();
                     Toast.makeText(getApplicationContext(), uid, Toast.LENGTH_SHORT).show();
 
                 }else{
@@ -147,7 +148,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         switch(v.getId()){
             case R.id.btnCreateAccount:
                 registerUser();
-                addUserInfo();
+                //addUserInfo();
                 break;
             case R.id.btnBack:
                 startActivity(new Intent(this, Login.class));

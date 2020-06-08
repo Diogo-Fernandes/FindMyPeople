@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1027770040289-k9hh2e3k92glunc4tvbmlitptpf4sab2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.findmypeople",
+            "certificate_hash": "3378141106ba36bb4c28f44024023e9ba1aedda6"
+          }
+        },
+        {
           "client_id": "1027770040289-eomj7227s79rtmfnp9tr79slg33fgmmm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
