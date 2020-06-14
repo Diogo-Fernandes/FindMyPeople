@@ -22,7 +22,7 @@ public class Main2Activity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNav);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, new ContactsFragment());
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new ContactsFragment()).commit();
         Log.i("main2","OnCreate");
 
     }
