@@ -5,25 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Main2Activity extends AppCompatActivity {
+public class BottomNavChild extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_bottom_nav_child);
 
-        bottomNavigationView = findViewById(R.id.bottomNav);
+        bottomNavigationView = findViewById(R.id.bottomNavChild);
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, new ContactsFragment()).commit();
-        Log.i("main2","OnCreate");
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.containerChild, new HelpFragment()).commit();
     }
 
     public BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod = new
@@ -32,28 +29,20 @@ public class Main2Activity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                     Fragment fragment = null;
-                    switch (menuItem.getItemId()){
-                        case R.id.contacts:
-                            fragment = new ContactsFragment();
+                    switch (menuItem.getItemId()) {
+                        case R.id.help:
+                            fragment = new HelpFragment();
                             break;
 
-                        case R.id.timeline:
-                            fragment = new TimelineFragment();
-                            break;
-
-                        case R.id.map:
+                        case R.id.mapChild:
                             fragment = new MapFragment();
                             break;
 
-                        case R.id.notifications:
-                            fragment = new NotificationsFragment();
-                            break;
-
-                        case R.id.profile:
-                            fragment = new UserProfileFragment();
+                        case R.id.reward:
+                            fragment = new RewardsFragmentChild();
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containerChild, fragment).commit();
 
                     return true;
                 }
