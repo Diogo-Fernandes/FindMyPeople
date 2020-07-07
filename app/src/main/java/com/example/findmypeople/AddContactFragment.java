@@ -91,11 +91,12 @@ public class AddContactFragment extends Fragment {
                                     for(QueryDocumentSnapshot document: task.getResult()){
                                         FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
                                         String uid = firebaseuser.getUid();
-                                        Log.d(TAG, "onComplete: " + uid);
+                                        Log.d(TAG, "MasterID: " + uid);
                                         String childID = document.getId();
+                                        Log.d(TAG, "childID: " + childID);
                                         DocumentReference masterRef = db.collection("Users_master").document(uid);
-                                        masterRef.update("users_child", FieldValue.arrayUnion(childID));
                                         Log.d(TAG, "onComplete: "+ document.getId() + "->" + document.getData());
+                                        masterRef.update("users_child", FieldValue.arrayUnion(document.getId()));
                                     }
                                 } else {
                                     //fazer toast a avisar que nao há numero de telefone na database
