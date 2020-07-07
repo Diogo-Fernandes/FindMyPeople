@@ -53,7 +53,7 @@ public class Main2Activity extends AppCompatActivity {
                             fragment = new UserProfileFragment();
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
 
                     return true;
                 }
