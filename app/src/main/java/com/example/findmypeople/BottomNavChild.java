@@ -47,4 +47,10 @@ public class BottomNavChild extends AppCompatActivity {
                     return true;
                 }
             };
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+// Not calling **super**, disables back button in current screen.
+    }
 }

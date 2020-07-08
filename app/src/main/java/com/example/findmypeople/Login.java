@@ -21,13 +21,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
@@ -39,6 +42,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     Button btnLogin;
     EditText txtEmail, txtPassword;
     ProgressBar progressBar;
+    String userType;
 
     static DocumentSnapshot userInfo;
     DocumentReference userRef;
@@ -105,21 +109,23 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
 
-                    getUserChildData();
-//                    getUserMasterData();
+                    userTypeDecider();
+                    userTypeDecider2();
 
-                    Log.d("userLogin", "DATA: " + teste);
 
-                    if (teste == "VIP") {
+                    //Log.d("userLogin", "DATA: " + teste);
+
+                    /*if (teste == "VIP") {
                         Log.d("TESTE", "OLAAAAA ");
                         Toast.makeText(getApplicationContext(), "sou Child", Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
 
                     //Vai carregar a Contacts Activity(pagina branca) porque ainda nao carreguei os fragments da matilde
                     //JÁ CONSEGUI POR DIREITO
-                    Intent intent = new Intent(Login.this, Main2Activity.class);
+
+                    /*Intent intent = new Intent(Login.this, Main2Activity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    startActivity(intent);*/
 
                 } else {
                     Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -128,82 +134,69 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         });
     };
 
-    public void getUserChildData() {
-        Log.d("USER ID", "getUserData: " + mAuth.getCurrentUser().getUid());
+    //Verifies if user is master
+    public void userTypeDecider(){
 
-        // Creates a query and then gets it
-        Query query = firebaseFirestore.collection("Users_child").whereEqualTo("uid", mAuth.getCurrentUser().getUid());
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull final Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
+        FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = firebaseuser.getUid();
 
-                    Log.d("QUALQUER COISA", "DocumentSnapshot data: " + task.getResult().getDocuments().get(0));
-
-                    // Updates variables whenever a change happens to the database
-                    userRef = firebaseFirestore.collection("Users_child").document(task.getResult().getDocuments().get(0).getId());
-                    userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                            @Nullable FirebaseFirestoreException e) {
-                            if (snapshot != null && snapshot.exists()) {
-                                Log.d("DATA", "Current data: " + snapshot.getData());
-
-                                // Saves updated user to variable
-                                userInfo = snapshot;
-                                teste = userInfo.getString("type");
-                                Log.d("onComplete", "Type " + teste);
-                            } else {
-                                Log.d("DATA VAZIO", "Current data: null");
+        CollectionReference masterRef = firebaseFirestore.collection("Users_master");
+        Query query = masterRef.whereEqualTo("uid", uid);
+        query
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for(QueryDocumentSnapshot document: task.getResult()) {
+                                userType = "bodyguard";
+                                Log.d("LoginDebug", "Successful: " +document.toString());
+                                Intent intent = new Intent(Login.this, Main2Activity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
                             }
+                        } else {
+
+                                Log.d("LoginDebug", "Failed: ");
+                                Intent intent = new Intent(Login.this, BottomNavChild.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                    }
+                });
+    }
+    //Verifies if user is child
+    public void userTypeDecider2(){
+
+        FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = firebaseuser.getUid();
+
+        CollectionReference masterRef = firebaseFirestore.collection("Users_child");
+        Query query = masterRef.whereEqualTo("uid", uid);
+        query
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for(QueryDocumentSnapshot document: task.getResult()) {
+                                userType = "bodyguard";
+                                Log.d("LoginDebug", "Successful: " +document.toString());
+                                Intent intent = new Intent(Login.this, BottomNavChild.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                        } else {
+
+                            Log.d("LoginDebug", "Failed: ");
+                            Intent intent = new Intent(Login.this, Main2Activity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
                         }
-                    });
-                } else {
-                    Log.d("FAIL", "onComplete: FAIL - " + task.getException());
-                }
-            }
-        });
+                    }
+                });
     }
 
-
-    // Gets the users data from the database
-    public void getUserMasterData() {
-        Log.d("USER ID", "getUserData: " + mAuth.getCurrentUser().getUid());
-
-        // Creates a query and then gets it
-        Query query = firebaseFirestore.collection("Users_master").whereEqualTo("uid", mAuth.getCurrentUser().getUid());
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull final Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    Log.d("QUALQUER COISA", "DocumentSnapshot data: " + task.getResult().getDocuments().get(0));
-
-                    // Updates variables whenever a change happens to the database
-                    userRef = firebaseFirestore.collection("Users_master").document(task.getResult().getDocuments().get(0).getId());
-                    userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                            @Nullable FirebaseFirestoreException e) {
-                            if (snapshot != null && snapshot.exists()) {
-                                Log.d("DATA", "Current data: " + snapshot.getData());
-
-                                // Saves updated user to variable
-                                userInfo = snapshot;
-                                teste = userInfo.getString("type");
-                                Log.d("DATA", "Type " + teste);
-                            } else {
-                                Log.d("DATA VAZIO", "Current data: null");
-                            }
-                        }
-                    });
-
-                } else {
-                    Log.d("FAIL", "onComplete: FAIL - " + task.getException());
-                }
-            }
-        });
-    }
 
 
     @Override
