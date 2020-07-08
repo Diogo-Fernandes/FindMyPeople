@@ -37,7 +37,6 @@
                     android:layout_weight="2"
                     android:layout_margin="10dp"
                     android:layout_toRightOf="@+id/profilePic"
-                    android:text="Matilde Valente"
                     android:textSize="20dp"/>
 
                 <TextView
@@ -48,8 +47,8 @@
                     android:layout_weight="1"
                     android:layout_margin="10dp"
                     android:layout_toRightOf="@+id/userName"
-                    android:text="Matilde Valente"
                     android:textSize="15dp"/>
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

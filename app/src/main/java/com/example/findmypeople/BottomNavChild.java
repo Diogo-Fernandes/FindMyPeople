@@ -42,7 +42,7 @@ public class BottomNavChild extends AppCompatActivity {
                             fragment = new RewardsFragmentChild();
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containerChild, fragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containerChild, fragment).addToBackStack(null).commit();
 
                     return true;
                 }
