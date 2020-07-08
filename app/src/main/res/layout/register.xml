@@ -42,25 +42,25 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="359dp"
         android:layout_marginBottom="105dp"
+        android:background="@drawable/ic_icon_feather_arrow_left"
         app:layout_constraintBottom_toTopOf="@+id/View"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/ic_icon_feather_arrow_left"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <View
         android:id="@+id/View"
         android:layout_width="match_parent"
         android:layout_height="410dp"
+        android:layout_marginLeft="23dp"
         android:layout_marginTop="45dp"
         android:layout_marginRight="23dp"
-        android:layout_marginLeft="23dp"
         android:background="@drawable/txtrounded"
+        app:layout_constraintBottom_toTopOf="@+id/btnAccess"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSubCriarConta"
-        app:layout_constraintBottom_toTopOf="@+id/btnAccess"/>
+        app:layout_constraintTop_toBottomOf="@+id/txtSubCriarConta" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -71,13 +71,13 @@
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="@+id/View"
         app:layout_constraintTop_toTopOf="@+id/View"
-        app:srcCompat="@drawable/ic_help_outline_black_24dp"
-        />
+        app:srcCompat="@drawable/ic_help_outline_black_24dp" />
 
     <EditText
         android:id="@+id/txtInputName"
         android:layout_width="270dp"
         android:layout_height="44dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/txtrounded"
         android:drawablePadding="10dp"
         android:ems="10"
@@ -87,16 +87,16 @@
         android:paddingLeft="10dp"
         android:textColor="@color/colorPrimary"
         android:textSize="15sp"
-        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toTopOf="@id/txtInputEmail"
         app:layout_constraintEnd_toEndOf="@+id/View"
         app:layout_constraintStart_toStartOf="@+id/View"
-        app:layout_constraintTop_toTopOf="@+id/View"
-        app:layout_constraintBottom_toTopOf="@id/txtInputEmail"/>
+        app:layout_constraintTop_toTopOf="@+id/View" />
 
     <EditText
         android:id="@+id/txtInputEmail"
         android:layout_width="270dp"
         android:layout_height="44dp"
+        android:layout_marginTop="23dp"
         android:background="@drawable/txtrounded"
         android:drawablePadding="10dp"
         android:ems="10"
@@ -106,16 +106,16 @@
         android:paddingLeft="10dp"
         android:textColor="@color/colorPrimary"
         android:textSize="15sp"
-        android:layout_marginTop="23dp"
+        app:layout_constraintBottom_toTopOf="@id/txtInputPassword"
         app:layout_constraintEnd_toEndOf="@+id/View"
         app:layout_constraintStart_toStartOf="@+id/View"
-        app:layout_constraintTop_toBottomOf="@+id/txtInputName"
-        app:layout_constraintBottom_toTopOf="@id/txtInputPassword"/>
+        app:layout_constraintTop_toBottomOf="@+id/txtInputName" />
 
     <EditText
         android:id="@+id/txtInputPassword"
         android:layout_width="270dp"
         android:layout_height="44dp"
+        android:layout_marginTop="23dp"
         android:background="@drawable/txtrounded"
         android:drawablePadding="10dp"
         android:ems="10"
@@ -125,16 +125,16 @@
         android:paddingLeft="10dp"
         android:textColor="@color/colorPrimary"
         android:textSize="15sp"
-        android:layout_marginTop="23dp"
-        app:layout_constraintRight_toRightOf="@+id/View"
+        app:layout_constraintBottom_toTopOf="@id/txtInputPhone"
         app:layout_constraintLeft_toLeftOf="@+id/View"
-        app:layout_constraintTop_toBottomOf="@+id/txtInputEmail"
-        app:layout_constraintBottom_toTopOf="@id/txtInputPhone"/>
+        app:layout_constraintRight_toRightOf="@+id/View"
+        app:layout_constraintTop_toBottomOf="@+id/txtInputEmail" />
 
     <EditText
         android:id="@+id/txtInputPhone"
         android:layout_width="270dp"
         android:layout_height="44dp"
+        android:layout_marginTop="23dp"
         android:background="@drawable/txtrounded"
         android:drawablePadding="10dp"
         android:ems="10"
@@ -144,11 +144,9 @@
         android:paddingLeft="10dp"
         android:textColor="@color/colorPrimary"
         android:textSize="15sp"
-        android:layout_marginTop="23dp"
         app:layout_constraintEnd_toEndOf="@+id/View"
         app:layout_constraintStart_toStartOf="@+id/View"
-        app:layout_constraintTop_toBottomOf="@+id/txtInputPassword"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/txtInputPassword" />
 
 
     <RadioGroup
@@ -207,11 +205,11 @@
         app:layout_constraintTop_toBottomOf="@+id/View" />
 
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/progressBar2"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="166dp"
         android:layout_height="29dp"
+        android:visibility="gone"
         tools:layout_editor_absoluteX="122dp"
         tools:layout_editor_absoluteY="658dp" />
 

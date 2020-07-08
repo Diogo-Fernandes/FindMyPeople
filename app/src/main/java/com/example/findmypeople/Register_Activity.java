@@ -31,6 +31,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Document;
 
@@ -44,6 +46,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
     RadioGroup radioGroup;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private StorageReference mStorageRef;
 
 
     private static final String TAG = "Register_Activity";
@@ -64,8 +67,9 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         radioVip = findViewById(R.id.radioVIP);
         radioGroup = findViewById(R.id.radioGroup);
 
-        // Initialize Firebase Auth
+        // Initialize Firebase Auth & Storage
         mAuth = FirebaseAuth.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         findViewById(R.id.btnCreateAccount).setOnClickListener(this);
         btnBack.setOnClickListener(this);
