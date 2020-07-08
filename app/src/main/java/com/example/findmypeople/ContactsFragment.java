@@ -25,6 +25,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,31 +86,34 @@ public class ContactsFragment extends Fragment {
 //                                DocumentReference masterRef = firebaseFirestore.collection("Users_child").document(uid);
                                 Log.d(TAG, "onComplete: " + document.getId() + "->" + document.getData().get("users_child"));
 
-                                DocumentReference childRef = firebaseFirestore.collection("Users_child").document(uid);
-                                Log.d(TAG, "onComplete: " + document.getId() + "->" + childRef);
+                                ArrayList<String> childArray = (ArrayList<String>) document.get("users_child");
+                                for (int i = 0; i < childArray.size(); i++) {
+                                    Log.d(TAG, "log de um possivel array: " + childArray.get(i));
 
-                                //Não sei se é suposto fazer isto
-                                Query query = firebaseFirestore.collection("Users_child").whereEqualTo("uid", document.getData().get("users_child"));
-                                query
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    Log.d(TAG, "Entrou: ");
-                                                    FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
-                                                    String uid = firebaseuser.getUid();
-
+                                    CollectionReference childRef = firebaseFirestore.collection("Users_child");
+                                    Query queryChild =  childRef.whereEqualTo("uid", childArray.get(i));
+                                    queryChild
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if(task.isSuccessful()){
+                                                        for (QueryDocumentSnapshot document2 : task.getResult()){
+                                                            Log.d(TAG, "data de cada child: " + document2.getData());
+                                                        }
+                                                    }
                                                 }
-                                            }
+                                            });
 
-                                        });
+                                }
+                                //o array com os IDs dos childs está em document.getData().get("users_child")
+                                /*DocumentReference childRef = firebaseFirestore.collection("Users_child").document(uid);
+                                Log.d(TAG, "onComplete: " + document.getId() + "->" + childRef);*/
+
+                                
                             }
-
                         } else {
-
                             Log.d("LoginDebug", "Failed: ");
-
                         }
                     }
                 });
