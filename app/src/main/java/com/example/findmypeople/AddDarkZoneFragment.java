@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +47,7 @@ public class AddDarkZoneFragment extends Fragment {
     EditText txtAddress;
     EditText txtRadius;
     Button btnAdd;
+    ImageView btnBack;
 
     FirebaseAuth mAuth;
     FirebaseFirestore db;
@@ -66,6 +69,20 @@ public class AddDarkZoneFragment extends Fragment {
         txtAddress = v.findViewById(R.id.txtAddress);
         txtRadius = v.findViewById(R.id.txtRadius);
         btnAdd = v.findViewById(R.id.btnAddZone);
+
+
+        btnBack = v.findViewById(R.id.btnBack2);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChildProfileFragment childProfileFragment = new ChildProfileFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, childProfileFragment);
+                transaction.addToBackStack(null).commit();
+            }
+        });
+
+
 
         db = FirebaseFirestore.getInstance();
 

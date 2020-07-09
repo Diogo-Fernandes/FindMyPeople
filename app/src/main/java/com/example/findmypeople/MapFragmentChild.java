@@ -67,8 +67,6 @@ public class MapFragmentChild extends Fragment {
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient client;
 
-    private float GEOFENCE_RADIUS = 200;
-
     Geocoder geocoder;
     List<Address> addresses;
 
@@ -190,7 +188,6 @@ public class MapFragmentChild extends Fragment {
     }
 
     private void getDarkZones() {
-
         Log.d("AAAAAAAAAh", "OLA" );
 
         db.collection("Zones")

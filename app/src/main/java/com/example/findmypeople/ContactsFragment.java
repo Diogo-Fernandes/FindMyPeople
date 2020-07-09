@@ -185,6 +185,15 @@ public class ContactsFragment extends Fragment {
             userName = itemView.findViewById(R.id.userName);
             location = itemView.findViewById(R.id.location);
             Log.d(TAG, "Array: " + arrayNames);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    ChildProfileFragment childProfileFragment = new ChildProfileFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, childProfileFragment);
+                    transaction.addToBackStack(null).commit();
+                }
+            });
         }
     }
 
