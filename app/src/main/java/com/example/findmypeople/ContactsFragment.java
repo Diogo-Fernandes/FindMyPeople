@@ -143,6 +143,9 @@ public class ContactsFragment extends Fragment {
                                         protected void onBindViewHolder(@NonNull ContactsViewHolder contactsViewHolder, int i, @NonNull ContactsModel contactsModel) {
                                             contactsViewHolder.userName.setText(contactsModel.getName());
                                             contactsViewHolder.location.setText(contactsModel.getLocation());
+                                            if(contactsViewHolder.location.getText() == "" || contactsViewHolder.location.getText() == null){
+                                                contactsViewHolder.location.setText("Unknown street");
+                                            }
                                             Log.d(TAG, "name child: " + contactsModel.getName());
 
 //                                            for(int j = 0; j < contactsModel.size(); j++){
