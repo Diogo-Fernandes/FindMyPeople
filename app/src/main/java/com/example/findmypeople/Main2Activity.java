@@ -34,7 +34,7 @@ public class Main2Activity extends AppCompatActivity {
                     Fragment fragment = null;
                     switch (menuItem.getItemId()){
                         case R.id.contacts:
-                            fragment = new AddDarkZoneFragment();
+                            fragment = new ContactsFragment();
                             break;
 
                         case R.id.timeline:

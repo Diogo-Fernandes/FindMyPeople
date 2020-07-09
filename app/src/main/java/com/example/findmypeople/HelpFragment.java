@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,6 +39,7 @@ import java.util.Map;
 public class HelpFragment extends Fragment {
 
     Button btnPanic;
+    ImageView btnLogout;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     String uid;
@@ -53,6 +55,7 @@ public class HelpFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_help, container, false);
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
         uid = firebaseuser.getUid();
@@ -122,6 +125,17 @@ public class HelpFragment extends Fragment {
                                 }
                             }
                         });
+            }
+        });
+
+        btnLogout = v.findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent intent = new Intent(getActivity(), Login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
 
