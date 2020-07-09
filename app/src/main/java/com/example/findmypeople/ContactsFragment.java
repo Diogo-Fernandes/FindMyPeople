@@ -31,6 +31,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 
@@ -105,7 +107,7 @@ public class ContactsFragment extends Fragment {
                                     Log.d(TAG, "log de um possivel array: " + childArray.get(i));
 
                                     CollectionReference childRef = firebaseFirestore.collection("Users_child");
-                                    //tentar whereArrayContainsAny (que nao é importado...)
+                                    //childRef.whereArrayContainsAny não é importado pelo android studio. Porquê? não sei, mesmo. Por causa disto nao dá para carregar a lista de contactos corretamente.
                                     Query queryChild = childRef.whereEqualTo("uid", childArray.get(i));
                                     queryChild
                                             .get()
@@ -140,6 +142,7 @@ public class ContactsFragment extends Fragment {
                                         @Override
                                         protected void onBindViewHolder(@NonNull ContactsViewHolder contactsViewHolder, int i, @NonNull ContactsModel contactsModel) {
                                             contactsViewHolder.userName.setText(contactsModel.getName());
+                                            contactsViewHolder.location.setText(contactsModel.getLocation());
                                             Log.d(TAG, "name child: " + contactsModel.getName());
 
 //                                            for(int j = 0; j < contactsModel.size(); j++){
@@ -174,11 +177,13 @@ public class ContactsFragment extends Fragment {
     private class ContactsViewHolder extends RecyclerView.ViewHolder {
 
         private TextView userName;
+        private TextView location;
 
         public ContactsViewHolder(@NonNull View itemView) {
             super(itemView);
 
             userName = itemView.findViewById(R.id.userName);
+            location = itemView.findViewById(R.id.location);
             Log.d(TAG, "Array: " + arrayNames);
         }
     }

@@ -2,7 +2,7 @@ package com.example.findmypeople;
 
 public class ContactsModel {
 
-    private String name, phone_number, type, uid;
+    private String name, phone_number, type, uid, Location;
 
     private ContactsModel() {
     }
@@ -41,5 +41,13 @@ public class ContactsModel {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getLocation() {
+        return Location;
+    }
+
+    public void setLocation(String location) {
+        Location = location;
     }
 }
