@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,6 +25,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -97,6 +102,11 @@ public class AddContactFragment extends Fragment {
                                         DocumentReference masterRef = db.collection("Users_master").document(uid);
                                         Log.d(TAG, "onComplete: "+ document.getId() + "->" + document.getData());
                                         masterRef.update("users_child", FieldValue.arrayUnion(document.getId()));
+
+                                        DocumentReference childDoc = db.collection("Users_child").document(document.getId());
+                                        Map<String, Object> childData = new HashMap<>();
+                                        childData.put("master_uid", uid);
+                                        childDoc.set(childData, SetOptions.merge());
                                     }
                                 } else {
                                     //fazer toast a avisar que nao há numero de telefone na database
