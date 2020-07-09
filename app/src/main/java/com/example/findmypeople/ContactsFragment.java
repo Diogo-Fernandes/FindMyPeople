@@ -6,13 +6,19 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +42,9 @@ public class ContactsFragment extends Fragment {
     Button addContact;
     FirebaseAuth mAuth;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    RecyclerView mFirestoreList;
     private static final String TAG = "ContactsFragment";
+    private FirestoreRecyclerAdapter adapter;
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -50,6 +58,7 @@ public class ContactsFragment extends Fragment {
 
         getChildData();
 
+        mFirestoreList = v.findViewById(R.id.firestore_list);
         addContact = v.findViewById(R.id.addContact);
         addContact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +100,35 @@ public class ContactsFragment extends Fragment {
                                     Log.d(TAG, "log de um possivel array: " + childArray.get(i));
 
                                     CollectionReference childRef = firebaseFirestore.collection("Users_child");
+                                    //tentar whereArrayContainsAny (que nao é importado...)
                                     Query queryChild =  childRef.whereEqualTo("uid", childArray.get(i));
+
+
+                                    FirestoreRecyclerOptions<ContactsModel> options = new FirestoreRecyclerOptions.Builder<ContactsModel>()
+                                            .setQuery(queryChild, ContactsModel.class)
+                                            .build();
+
+
+                                     adapter = new FirestoreRecyclerAdapter<ContactsModel, ContactsViewHolder>(options) {
+                                        @NonNull
+                                        @Override
+                                        public ContactsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                                            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_contacts, parent, false);
+                                            return new ContactsViewHolder(view);
+                                        }
+
+                                        @Override
+                                        protected void onBindViewHolder(@NonNull ContactsViewHolder contactsViewHolder, int i, @NonNull ContactsModel contactsModel) {
+                                            contactsViewHolder.userName.setText(contactsModel.getName());
+                                        }
+                                    };
+                                        mFirestoreList.setHasFixedSize(true);
+                                        mFirestoreList.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                                        adapter.startListening();
+                                    Log.d(TAG, "onComplete: " + adapter);
+                                        mFirestoreList.setAdapter(adapter);
+
+
                                     queryChild
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -118,4 +155,21 @@ public class ContactsFragment extends Fragment {
                     }
                 });
     }
+
+    private class ContactsViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView userName;
+        public ContactsViewHolder(@NonNull View itemView){
+            super(itemView);
+
+            userName = itemView.findViewById(R.id.userName);
+        }
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        adapter.stopListening();
+    }
+
 }

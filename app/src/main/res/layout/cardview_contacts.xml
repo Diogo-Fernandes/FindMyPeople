@@ -44,10 +44,11 @@
                     android:layout_width="229dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentBottom="true"
-                    android:layout_weight="1"
                     android:layout_margin="10dp"
                     android:layout_toRightOf="@+id/userName"
-                    android:textSize="15dp"/>
+                    android:layout_weight="1"
+                    android:text="Uma rua"
+                    android:textSize="15dp" />
 
             </LinearLayout>
         </LinearLayout>

@@ -57,58 +57,6 @@
         android:layout_marginRight="23sp"
         />-->
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search"
-        android:layout_margin="23sp"
-
-        >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/profilePic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:srcCompat="@tools:sample/avatars"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/userName"
-                    android:layout_width="229dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp"
-                    android:layout_toRightOf="@+id/profilePic"
-                    android:text="Matilde Valente"
-                    android:textSize="20dp"/>
-
-                <TextView
-                    android:id="@+id/location"
-                    android:layout_width="229dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp"
-                    android:layout_toRightOf="@+id/userName"
-                    android:text="Matilde Valente"
-                    android:textSize="15dp"/>
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
     <Button
         android:id="@+id/addContact"
         android:layout_width="match_parent"
@@ -127,5 +75,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/bg" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/firestore_list"
+        android:layout_width="364dp"
+        android:layout_height="433dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="45dp"
+        app:layout_constraintBottom_toTopOf="@+id/addContact"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
