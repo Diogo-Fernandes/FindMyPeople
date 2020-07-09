@@ -39,6 +39,7 @@ public class BottomNavChild extends AppCompatActivity {
                             break;
 
                         case R.id.reward:
+                            //NAOESQUECER MUDAR PARA RewardsFragmentChild
                             fragment = new RewardsFragmentChild();
                             break;
                     }
