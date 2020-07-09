@@ -7,8 +7,8 @@
          location permissions for the 'MyLocation' functionality.
     -->
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,7 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BottomNavChild"></activity>
+        <activity android:name=".BottomNavChild" android:windowSoftInputMode="adjustPan"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -35,7 +35,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" /> <!-- nav -->
-        <activity android:name=".Main2Activity" />
+        <activity android:name=".Main2Activity" android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".Contacts_Activity"
             android:windowSoftInputMode="adjustPan" />

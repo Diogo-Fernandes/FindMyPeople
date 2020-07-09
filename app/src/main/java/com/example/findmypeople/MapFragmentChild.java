@@ -2,12 +2,17 @@ package com.example.findmypeople;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -24,11 +29,31 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 
 /**
@@ -42,6 +67,19 @@ public class MapFragmentChild extends Fragment {
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient client;
 
+    private float GEOFENCE_RADIUS = 200;
+
+    Geocoder geocoder;
+    List<Address> addresses;
+
+    FirebaseAuth mAuth;
+    FirebaseFirestore db;
+
+    ArrayList<String> address = new ArrayList<>();
+
+    private static final String TAG = "Map fragment";
+
+
     public MapFragmentChild() {
         // Required empty public constructor
     }
@@ -54,14 +92,13 @@ public class MapFragmentChild extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_map_child, container, false);
+
+        db = FirebaseFirestore.getInstance();
 
         View rootView = inflater.inflate(R.layout.fragment_map_child, container, false);
-        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+        mMapView = (MapView) rootView.findViewById(R.id.mapViewChild);
         mMapView.onCreate(savedInstanceState);
 
-//        mMapView.onResume(); // needed to get the map to display immediately
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -73,41 +110,20 @@ public class MapFragmentChild extends Fragment {
 
         if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getCurrentLocation();
-        }
-        else{
+            getDarkZones();
+        } else {
             ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
             Toast.makeText(getActivity().getApplicationContext(), "Não tem acesso à localização", Toast.LENGTH_SHORT).show();
         }
 
         mMapView.onResume(); // needed to get the map to display immediately
 
-//        try {
-//            MapsInitializer.initialize(getActivity().getApplicationContext());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-//        mMapView.getMapAsync(new OnMapReadyCallback() {
-//            @Override
-//            public void onMapReady(GoogleMap mMap) {
-//                googleMap = mMap;
-//
-//                // For dropping a marker at a point on the Map
-//                LatLng sydney = new LatLng(41.2182482, -8.6762783);
-//                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
-//
-//                // For zooming automatically to the location of the marker
-//                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-//                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-//            }
-//        });
-
         return rootView;
     }
 
     private void getCurrentLocation() {
         Task<Location> task = client.getLastLocation();
-        Log.d("AAAAAAAAAh","AQUI");
+        Log.d("AAAAAAAAAh", "AQUI");
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(final Location location) {
@@ -118,25 +134,113 @@ public class MapFragmentChild extends Fragment {
 
                         // For dropping a marker at a point on the Map
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        googleMap.addMarker(new MarkerOptions().position(latLng).title("Marker Title").snippet("Marker Description"));
 
-                        Log.d("AAAAAAAAAh","OnCreate" + latLng);
+                        geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+                        try {
+                            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+
+                        MarkerOptions markerOptions = new MarkerOptions().position(latLng);
+                        googleMap.addMarker(markerOptions.title("Eu").snippet(address).flat(true));
+
+                        Log.d("AAAAAAAAAh", "OnCreate" + latLng);
 
                         // For zooming automatically to the location of the marker
-                        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(12).build();
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(16).build();
                         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+
+
+
+                        //Saves location to DB
+                        Map<String, Object> location = new HashMap<>();
+                        location.put("Location", address);
+
+                        FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
+                        String uid = firebaseuser.getUid();
+
+                        DocumentReference refChild = db.collection("Users_child").document(uid);
+                        String childId = refChild.getId();
+
+                        Log.d(TAG, refChild.getId());
+
+                        db.collection("Users_child").document(childId).set(location, SetOptions.merge())
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error writing document", e);
+                                    }
+                                });
                     }
                 });
             }
         });
     }
 
+    private void getDarkZones() {
+
+        Log.d("AAAAAAAAAh", "OLA" );
+
+        db.collection("Zones")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("AAAAAAAAAh", "OnCreate" + document.getData());
+
+                                address.add(document.getString("Lat"));
+                                address.add(document.getString("Lng"));
+                                address.add(document.getString("Radius"));
+
+                                addCircle(document.getString("Lat"), document.getString("Lng"), document.getString("Radius"));
+
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Error getting data!!!", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == 44){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 44) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getCurrentLocation();
             }
         }
+    }
+
+    private void addCircle(String lat, String lng, String radius) {
+        Double lat2 = Double.parseDouble(lat);
+        Double lng2 = Double.parseDouble(lng);
+        Double radius2 = Double.parseDouble(radius);
+        LatLng latLng = new LatLng(lat2, lng2);
+
+        CircleOptions circleOptions = new CircleOptions();
+        circleOptions.center(latLng);
+        circleOptions.radius(radius2);
+        circleOptions.strokeColor(Color.argb(255, 41, 58, 77));
+        circleOptions.fillColor(Color.argb(70, 41, 58, 77));
+        circleOptions.strokeWidth(4);
+        googleMap.addCircle(circleOptions);
     }
 }

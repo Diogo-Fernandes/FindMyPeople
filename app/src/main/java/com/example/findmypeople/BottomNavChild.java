@@ -35,7 +35,7 @@ public class BottomNavChild extends AppCompatActivity {
                             break;
 
                         case R.id.mapChild:
-                            fragment = new MapFragment();
+                            fragment = new MapFragmentChild();
                             break;
 
                         case R.id.reward:

@@ -46,6 +46,9 @@ public class ContactsFragment extends Fragment {
     private static final String TAG = "ContactsFragment";
     private FirestoreRecyclerAdapter adapter;
 
+    private ArrayList<String> arrayNames = new ArrayList<>();
+    ArrayList<String> arrayUserIds = new ArrayList<>();
+
     public ContactsFragment() {
         // Required empty public constructor
     }
@@ -69,6 +72,8 @@ public class ContactsFragment extends Fragment {
                 transaction.addToBackStack(null).commit();
             }
         });
+
+
 
         return v;
     }
@@ -101,7 +106,22 @@ public class ContactsFragment extends Fragment {
 
                                     CollectionReference childRef = firebaseFirestore.collection("Users_child");
                                     //tentar whereArrayContainsAny (que nao é importado...)
-                                    Query queryChild =  childRef.whereEqualTo("uid", childArray.get(i));
+                                    Query queryChild = childRef.whereEqualTo("uid", childArray.get(i));
+                                    queryChild
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (QueryDocumentSnapshot document2 : task.getResult()) {
+                                                            Log.d(TAG, "data de cada child: " + document2.getData());
+                                                            arrayNames.add(document2.getString("name"));
+                                                            Log.d(TAG, "Array: " + arrayNames);
+                                                        }
+                                                    }
+                                                }
+                                            });
+
 
 
                                     FirestoreRecyclerOptions<ContactsModel> options = new FirestoreRecyclerOptions.Builder<ContactsModel>()
@@ -109,7 +129,7 @@ public class ContactsFragment extends Fragment {
                                             .build();
 
 
-                                     adapter = new FirestoreRecyclerAdapter<ContactsModel, ContactsViewHolder>(options) {
+                                    adapter = new FirestoreRecyclerAdapter<ContactsModel, ContactsViewHolder>(options) {
                                         @NonNull
                                         @Override
                                         public ContactsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -120,34 +140,29 @@ public class ContactsFragment extends Fragment {
                                         @Override
                                         protected void onBindViewHolder(@NonNull ContactsViewHolder contactsViewHolder, int i, @NonNull ContactsModel contactsModel) {
                                             contactsViewHolder.userName.setText(contactsModel.getName());
+                                            Log.d(TAG, "name child: " + contactsModel.getName());
+
+//                                            for(int j = 0; j < contactsModel.size(); j++){
+//                                                contactsViewHolder.userName.setText(arrayNames.get(i));
+//                                                Log.d(TAG, "data : " + arrayNames.get(i));
+//                                            }
                                         }
                                     };
-                                        mFirestoreList.setHasFixedSize(true);
-                                        mFirestoreList.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-                                        adapter.startListening();
+                                    mFirestoreList.setHasFixedSize(true);
+                                    mFirestoreList.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                                    adapter.startListening();
                                     Log.d(TAG, "onComplete: " + adapter);
-                                        mFirestoreList.setAdapter(adapter);
+                                    mFirestoreList.setAdapter(adapter);
 
 
-                                    queryChild
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if(task.isSuccessful()){
-                                                        for (QueryDocumentSnapshot document2 : task.getResult()){
-                                                            Log.d(TAG, "data de cada child: " + document2.getData());
-                                                        }
-                                                    }
-                                                }
-                                            });
+
 
                                 }
                                 //o array com os IDs dos childs está em document.getData().get("users_child")
                                 /*DocumentReference childRef = firebaseFirestore.collection("Users_child").document(uid);
                                 Log.d(TAG, "onComplete: " + document.getId() + "->" + childRef);*/
 
-                                
+
                             }
                         } else {
                             Log.d("LoginDebug", "Failed: ");
@@ -159,15 +174,18 @@ public class ContactsFragment extends Fragment {
     private class ContactsViewHolder extends RecyclerView.ViewHolder {
 
         private TextView userName;
-        public ContactsViewHolder(@NonNull View itemView){
+
+        public ContactsViewHolder(@NonNull View itemView) {
             super(itemView);
 
             userName = itemView.findViewById(R.id.userName);
+            Log.d(TAG, "Array: " + arrayNames);
         }
     }
 
+
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         adapter.stopListening();
     }
