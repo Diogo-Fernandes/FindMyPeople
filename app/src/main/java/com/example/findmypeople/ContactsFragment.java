@@ -201,10 +201,10 @@ public class ContactsFragment extends Fragment {
     }
 
 
-    @Override
+    /*@Override
     public void onStop() {
         super.onStop();
         adapter.stopListening();
-    }
+    }*/
 
 }
